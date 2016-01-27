@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
 USA.
 */
 
+import java.util.concurrent.BlockingQueue;
+
 /**
  * An abstract class for {@link Client}s in a {@link Maze} that local to the 
  * computer the game is running upon. You may choose to implement some of 
@@ -30,37 +32,31 @@ USA.
 
 public abstract class LocalClient extends Client {
 
-        /** 
-         * Create a {@link Client} local to this machine.
-         * @param name The name of this {@link Client}.
-         */
-         
-        private BlockingQueue eventQueue = null;
-        
-        public LocalClient(String name, BlockingQueue eventQueue) {
-                super(name);
-                this.eventQueue = eventQueue;
-                assert(name != null);
-        }
+    /**
+     * Create a {@link Client} local to this machine.
+     */
 
-        /**
-         * Fill in here??
-         
-        @Override
-        protected boolean forward() {
-                
-                if(maze.moveClientForward(this)) {
-                        return true;
-                } else {
-                        return false;
-                }
-        }*/
-        
-        public void addActionEvent(int action){
-            eventQueue.put(new MPacket(getName(), MPacket.ACTION, action));
+    private BlockingQueue eventQueue = null;
+
+    public LocalClient(String name, BlockingQueue eventQueue) {
+        super(name);
+        this.eventQueue = eventQueue;
+    }
+
+
+    public void addActionEvent(int action) throws InterruptedException {
+        eventQueue.put(new MPacket(getName(), MPacket.ACTION, action));
+    }
+
+    public void sendKillClient(Player player) {
+        try {
+            MPacket packet = new MPacket(getName(), MPacket.ACTION, MPacket.DIE);
+            packet.players = new Player[1];
+            packet.players[0] = player;//store the die info into the player and in packet
+            eventQueue.put(packet);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
-        
-        public void sendKillClient(Player player){
-            eventQueue.put(new MPacket(getName(), MPacket.ACTION, MPacket.DIE));
-        }
+    }
 }
