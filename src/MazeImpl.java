@@ -521,6 +521,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 Object o = clientMap.remove(client);
                 assert (o instanceof Point);
                 Point point = (Point) o;
+
                 CellImpl cell = getCellImpl(point);
                 cell.setContents(null);
 
@@ -530,6 +531,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 Direction newD = Direction.getDirection(newPosition.direction);
 
                 //set client at new position
+                cell = getCellImpl(newPoint);
                 cell.setContents(client);
 
                 clientMap.put(client, new DirectedPoint(newPoint, newD));
