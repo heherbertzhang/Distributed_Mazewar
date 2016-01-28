@@ -54,6 +54,23 @@ public class Direction {
                 assert((direction >= 0) && (direction < 4));
                 this.direction = direction;
         }
+
+        public static Direction getDirection(int direction) {
+                switch (direction) {
+                        case Direction.NORTH:
+                                return Direction.North;
+                        case Direction.SOUTH:
+                                return Direction.South;
+                        case Direction.EAST:
+                                return Direction.East;
+                        case Direction.WEST:
+                                return Direction.West;
+                        default:
+                                return null;
+
+                }
+        }
+
         public int getDirection(){
                 return direction;
         }

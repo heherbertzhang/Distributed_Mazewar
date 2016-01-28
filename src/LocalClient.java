@@ -48,11 +48,12 @@ public abstract class LocalClient extends Client {
         eventQueue.put(new MPacket(getName(), MPacket.ACTION, action));
     }
 
-    public void sendKillClient(Player player) {
+    public void sendKillClient(Player player, Player sourcePlayer) {
         try {
             MPacket packet = new MPacket(getName(), MPacket.ACTION, MPacket.DIE);
-            packet.players = new Player[1];
+            packet.players = new Player[2];
             packet.players[0] = player;//store the die info into the player and in packet
+            packet.players[1] = sourcePlayer;
             eventQueue.put(packet);
         } catch (InterruptedException e) {
             e.printStackTrace();

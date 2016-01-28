@@ -16,6 +16,7 @@ public class Player implements Serializable {
         this.name = name;
         this.direction = direction;
     }
+
     public String toString(){
     	return "[" + name + ": (" + point.getX() + "," + point.getY() + ")]"; 
     }

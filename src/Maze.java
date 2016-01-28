@@ -70,7 +70,10 @@ public abstract class Maze {
      * @param client {@link Client} that is firing.
      * @return <code>false</code> on failure, <code>true</code> on success. */
     public abstract boolean clientFire(Client client);
-    
+
+    //die
+    public abstract boolean clientDie(Client dest, Client src, Player newPosition);
+
     /** 
      * Remove the specified {@link Client} from the {@link Maze} 
      * @param client {@link Client} to be removed.

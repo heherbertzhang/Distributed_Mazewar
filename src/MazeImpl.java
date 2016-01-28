@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
@@ -502,8 +501,10 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                         while(cell.isWall(d)) {
                                 d = Direction.random();
                         }
+
                         Player newPosition = new Player(target.getName(), point, d.getDirection());
-                        ((LocalClient) target).sendKillClient(newPosition);
+                        Player sourcePlayer = new Player(source.getName(), null, -1);
+                        ((LocalClient) target).sendKillClient(newPosition, sourcePlayer);
                 }
 
                 /*
@@ -512,6 +513,33 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 update();
                 notifyClientKilled(source, target);*/
         }
+
+        public synchronized boolean clientDie(Client client, Client source, Player newPosition) {
+                assert (client != null);
+                Mazewar.consolePrintLn(client.getName() + " just vaporized " +
+                        client.getName());
+                Object o = clientMap.remove(client);
+                assert (o instanceof Point);
+                Point point = (Point) o;
+                CellImpl cell = getCellImpl(point);
+                cell.setContents(null);
+
+                //get new position
+
+                Point newPoint = newPosition.point;
+                Direction newD = Direction.getDirection(newPosition.direction);
+
+                //set client at new position
+                cell.setContents(client);
+
+                clientMap.put(client, new DirectedPoint(point, newD));
+                update();
+                notifyClientKilled(source, client);
+
+                return true;
+        }
+
+
 
         /**
          * Internal helper called when a {@link Client} emits a turnLeft action.

@@ -180,6 +180,17 @@ public abstract class Client {
                         return false;
                 }
         }
+
+        public boolean die(Client src, Player newPosition) {
+                assert (maze != null);
+
+                if (maze.clientDie(this, src, newPosition)) {
+                        notifyDie();//useless
+                        return true;
+                } else {
+                        return false;
+                }
+        }
         
         
         /** 
@@ -216,7 +227,10 @@ public abstract class Client {
         private void notifyFire() {
                 notifyListeners(ClientEvent.fire);       
         }
-        
+
+        private void notifyDie() {
+                notifyListeners(ClientEvent.die);
+        }
         /**
          * Send a the specified {@link ClientEvent} to all registered listeners
          * @param ce Event to be sent.
@@ -231,5 +245,6 @@ public abstract class Client {
                         cl.clientUpdate(this, ce);
                 } 
         }
-        
+
+
 }
