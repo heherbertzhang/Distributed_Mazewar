@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -20,6 +22,8 @@ public class Server {
         mServerSocket = new MServerSocket(port);
         if(Debug.debug){
             System.out.println("Listening on port: " + port);
+
+            System.out.println(InetAddress.getLocalHost().getHostName());
         }
         
         mSocketList = new MSocket[MAX_CLIENTS];

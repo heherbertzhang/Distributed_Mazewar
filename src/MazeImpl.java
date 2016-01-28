@@ -517,7 +517,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
         public synchronized boolean clientDie(Client client, Client source, Player newPosition) {
                 assert (client != null);
                 Mazewar.consolePrintLn(client.getName() + " just vaporized " +
-                        client.getName());
+                        source.getName());
                 Object o = clientMap.remove(client);
                 assert (o instanceof Point);
                 Point point = (Point) o;
@@ -532,7 +532,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 //set client at new position
                 cell.setContents(client);
 
-                clientMap.put(client, new DirectedPoint(point, newD));
+                clientMap.put(client, new DirectedPoint(newPoint, newD));
                 update();
                 notifyClientKilled(source, client);
 

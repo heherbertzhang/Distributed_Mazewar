@@ -88,8 +88,8 @@ class DequeueThread implements Runnable{
                 } else if (received.event == MPacket.DIE) {
                     Player newPosition = received.players[0];
                     Client sourceClient = clientTable.get(received.players[1].name);
-                    //Client destClient = clientTable.get(newPosition.name);
-                    client.die(sourceClient, newPosition);
+                    Client destClient = clientTable.get(newPosition.name);
+                    client.die(destClient, sourceClient, newPosition);
                 } else {
                     throw new UnsupportedOperationException();
                 }    
