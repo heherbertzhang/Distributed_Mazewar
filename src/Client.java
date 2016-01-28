@@ -181,10 +181,10 @@ public abstract class Client {
                 }
         }
 
-        public boolean die(Client dest, Client src, Player newPosition) {
+        public boolean die(Client src, Player newPosition) {
                 assert (maze != null);
 
-                if (maze.clientDie(dest, src, newPosition)) {
+                if (maze.clientDie(this, src, newPosition)) {
                         notifyDie();//useless
                         return true;
                 } else {

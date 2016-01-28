@@ -35,11 +35,12 @@ public class ClientListenerThread implements Runnable {
                 //add to incoming queue
                 mIncomingQueue.add(received);
                 MPacket peek = (MPacket)mIncomingQueue.peek();
-                if(Debug.debug && peek != null) {
-                    System.out.println("adding, current peek is " + peek.sequenceNumber);
-                }
-                else{
-                    System.out.println("add fail");
+                if (Debug.debug) {
+                    if (peek != null) {
+                        System.out.println("adding, current peek is " + peek.sequenceNumber);
+                    } else {
+                        System.out.println("add fail");
+                    }
                 }
                
             }catch(IOException e){
@@ -88,8 +89,8 @@ class DequeueThread implements Runnable{
                 } else if (received.event == MPacket.DIE) {
                     Player newPosition = received.players[0];
                     Client sourceClient = clientTable.get(received.players[1].name);
-                    Client destClient = clientTable.get(newPosition.name);
-                    client.die(destClient, sourceClient, newPosition);
+                    //Client destClient = clientTable.get(newPosition.name);
+                    client.die(sourceClient, newPosition);
                 } else {
                     throw new UnsupportedOperationException();
                 }    

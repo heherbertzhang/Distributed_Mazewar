@@ -516,8 +516,8 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
 
         public synchronized boolean clientDie(Client client, Client source, Player newPosition) {
                 assert (client != null);
-                Mazewar.consolePrintLn(client.getName() + " just vaporized " +
-                        source.getName());
+                Mazewar.consolePrintLn(source.getName() + " just vaporized " +
+                        client.getName());
                 Object o = clientMap.remove(client);
                 assert (o instanceof Point);
                 Point point = (Point) o;
