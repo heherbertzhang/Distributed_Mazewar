@@ -299,7 +299,14 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                 return true;
                         } else {
                                 // Otherwise fail (bullets will destroy each other)
-                                return false;
+                                //here is inconsistent?
+                                //if destory each other should clean the content
+                                //return false
+                                notifyClientFired(client);//reflect on score board
+                                projectileMap.remove((Projectile) contents);
+                                newCell.setContents(null);
+                                update();
+                                return true;
                         }
                 }
 
