@@ -314,11 +314,13 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                 //return false
                                 System.out.println("content is bullet");
                                 //do not notify client fired?
-                                notifyClientFired(client);
-                                projectileMap.remove((Projectile) contents);
-                                newCell.setContents(null);
-
+                                notifyClientFired(client);//score
+                                //projectileMap.remove((Projectile) contents);
+                                //newCell.setContents(null);
+                                Collection deadprj = new LinkedList();
+                                deadprj.add((Projectile) contents);
                                 update();
+                                clear_bullet(deadprj);
                                 System.out.println("remove and update bullet done");
                                 return true;
                         }
