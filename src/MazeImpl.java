@@ -319,8 +319,8 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                 //newCell.setContents(null);
                                 Collection deadprj = new LinkedList();
                                 deadprj.add((Projectile) contents);
-                                update();
                                 clear_bullet(deadprj);
+                                update();
                                 System.out.println("remove and update bullet done");
                                 return true;
                         }
