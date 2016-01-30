@@ -330,7 +330,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 /* Write the new cell */
                 System.out.println("write the new cell");
                 projectileMap.put(prj, newPoint);
-                projectileCodeMap.put(prj.hashCode(), prj);
+                projectileCodeMap.put(prj.getOwner().getName(), prj);
                 newCell.setContents(prj);
                 notifyClientFired(client);
                 update();
@@ -426,11 +426,11 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 }
         }
 
-        public synchronized boolean moveProjectile(int hashcode) {
+        public synchronized boolean moveProjectile(String prjname) {
 
                 Collection deadPrj = new LinkedList();
                 //assert(prj != null);
-                Projectile prj = (Projectile) projectileCodeMap.get(hashcode);
+                Projectile prj = (Projectile) projectileCodeMap.get(prjname);
                 if (prj != null) {
                         Object o = projectileMap.get(prj);
                         assert (o instanceof DirectedPoint);

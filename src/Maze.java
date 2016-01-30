@@ -74,7 +74,7 @@ public abstract class Maze {
     //die
     public abstract boolean clientDie(Client dest, Client src, Player newPosition);
 
-    public abstract boolean moveProjectile(int code);
+    public abstract boolean moveProjectile(String name);
     /** 
      * Remove the specified {@link Client} from the {@link Maze} 
      * @param client {@link Client} to be removed.

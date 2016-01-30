@@ -40,7 +40,7 @@ public class MPacket implements Serializable {
     public Player[] players;
 
     //projectile
-    public int projectile;
+    //public int projectile;
 
     public MPacket(int type, int event){
         this.type = type;

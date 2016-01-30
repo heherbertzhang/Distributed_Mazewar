@@ -64,7 +64,7 @@ public abstract class LocalClient extends Client {
 
     public void sendMoveProjectile(int prj) {
         MPacket packet = new MPacket(getName(), MPacket.ACTION, MPacket.MOVE_BULLET);
-        packet.projectile = prj;
+        //packet.projectile = prj;
         try {
             eventQueue.put(packet);
         } catch (InterruptedException e) {
