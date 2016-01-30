@@ -85,6 +85,7 @@ class DequeueThread implements Runnable{
                 }else if(received.event == MPacket.RIGHT){
                     client.turnRight();
                 }else if(received.event == MPacket.FIRE){
+                    System.out.println(client.getName() + " about to call fire()");
                     client.fire();
                 } else if (received.event == MPacket.DIE) {
                     Player newPosition = received.players[0];

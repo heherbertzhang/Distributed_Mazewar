@@ -271,53 +271,69 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 // If the client already has a projectile in play
                 // fail.
                 if(clientFired.contains(client)) {
+                        if (Debug.debug) {
+                                System.out.println("already in fire");
+                        }
                         return false;
                 }
-
+                System.out.println("getting point from fire");
                 Point point = getClientPoint(client);
                 Direction d = getClientOrientation(client);
                 CellImpl cell = getCellImpl(point);
-
+                System.out.println("getting done");
                 /* Check that you can fire in that direction */
                 if(cell.isWall(d)) {
+                        if (Debug.debug) {
+                                System.out.println("fire fail because wall");
+                        }
                         return false;
                 }
-
+                System.out.println("fire new point");
                 DirectedPoint newPoint = new DirectedPoint(point.move(d), d);
                 /* Is the point withint the bounds of maze? */
                 assert(checkBounds(newPoint));
 
                 CellImpl newCell = getCellImpl(newPoint);
                 Object contents = newCell.getContents();
+                System.out.println("new point done");
                 if(contents != null) {
+                        System.out.println("content not null");
                         // If it is a Client, kill it outright
                         if(contents instanceof Client) {
-                                notifyClientFired(client);
+                                System.out.println("content is client");
+                                notifyClientFired(client);//should we comment this out?
 
                                 killClient(client, (Client)contents);
                                 update();
+                                System.out.println("done0");
                                 return true;
                         } else {
                                 // Otherwise fail (bullets will destroy each other)
                                 //here is inconsistent?
                                 //if destory each other should clean the content
                                 //return false
-                                notifyClientFired(client);//reflect on score board
+                                System.out.println("content is bullet");
+                                //do not notify client fired?
+                                notifyClientFired(client);
                                 projectileMap.remove((Projectile) contents);
                                 newCell.setContents(null);
+
                                 update();
+                                System.out.println("remove and update bullet done");
                                 return true;
                         }
                 }
-
+                System.out.println("move bullet when fire");
                 clientFired.add(client);
                 Projectile prj = new Projectile(client);
 
                 /* Write the new cell */
+                System.out.println("write the new cell");
                 projectileMap.put(prj, newPoint);
                 newCell.setContents(prj);
                 notifyClientFired(client);
                 update();
+                System.out.println("fire done");
                 return true;
         }
 
