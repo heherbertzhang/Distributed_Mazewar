@@ -433,6 +433,9 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 Projectile prj = (Projectile) projectileCodeMap.get(prjname);
                 if (prj != null) {
                         Object o = projectileMap.get(prj);
+                        if (o == null) {
+                                return false;
+                        }
                         assert (o instanceof DirectedPoint);
                         DirectedPoint dp = (DirectedPoint) o;
                         Direction d = dp.getDirection();
