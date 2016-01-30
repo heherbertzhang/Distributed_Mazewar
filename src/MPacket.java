@@ -20,6 +20,7 @@ public class MPacket implements Serializable {
     public static final int RIGHT = 204;
     public static final int FIRE = 205;
     public static final int DIE = 206;
+    public static final int MOVE_BULLET = 207;
     
     
     //These fields characterize the event  
@@ -37,6 +38,9 @@ public class MPacket implements Serializable {
     public int mazeHeight;
     public int mazeWidth; 
     public Player[] players;
+
+    //projectile
+    public Projectile projectile;
 
     public MPacket(int type, int event){
         this.type = type;
@@ -88,6 +92,9 @@ public class MPacket implements Serializable {
                 break;
             case 206:
                 eventStr = "DIE";
+                break;
+            case 207:
+                eventStr = "MOVE_BULLET";
                 break;
             default:
                 eventStr = "ERROR";

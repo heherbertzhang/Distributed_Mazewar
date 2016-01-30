@@ -35,6 +35,7 @@ public class ClientEvent {
         private static final int TURN_RIGHT = 3;
         private static final int FIRE = 4;
         private static final int DIE = 5;
+        private static final int BULLET = 6;
         
         /**
          * Default to 0, to be invalid.
@@ -77,4 +78,5 @@ public class ClientEvent {
         public static final ClientEvent fire = new ClientEvent(FIRE);
 
         public static final ClientEvent die = new ClientEvent(DIE);
+        public static final ClientEvent bullet = new ClientEvent(BULLET);
 }

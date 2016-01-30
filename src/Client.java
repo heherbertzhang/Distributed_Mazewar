@@ -191,11 +191,26 @@ public abstract class Client {
                         return false;
                 }
         }
-        
-        
+
+        public boolean bullet_move(Projectile prj) {
+                assert (maze != null);
+
+                if (maze.moveProjectile(prj)) {
+                        notify_bullet();
+                        return true;
+                } else {
+                        return false;
+                }
+        }
         /** 
          * Notify listeners that the client moved forward.
          */
+        private void notify_bullet() {
+                notifyListeners(ClientEvent.bullet);
+        }
+
+
+
         private void notifyMoveForward() {
                 notifyListeners(ClientEvent.moveForward);
         }

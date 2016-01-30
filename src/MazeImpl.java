@@ -386,7 +386,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
          * Control loop for {@link Projectile}s.
          */
         public void run() {
-                Collection deadPrj = new HashSet();
+                //Collection deadPrj = new HashSet();
                 while(true) {
                         if(!projectileMap.isEmpty()) {
                                 Iterator it = projectileMap.keySet().iterator();
@@ -394,9 +394,10 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                         while(it.hasNext()) {
                                                 Object o = it.next();
                                                 assert(o instanceof Projectile);
-                                                deadPrj.addAll(moveProjectile((Projectile)o));
+                                                sendProjectileSignal((Projectile) o);
+                                                //deadPrj.addAll(moveProjectile((Projectile)o));
                                         }
-                                        it = deadPrj.iterator();
+                                        /*it = deadPrj.iterator();
                                         while(it.hasNext()) {
                                                 Object o = it.next();
                                                 assert(o instanceof Projectile);
@@ -404,7 +405,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                                 projectileMap.remove(prj);
                                                 clientFired.remove(prj.getOwner());
                                         }
-                                        deadPrj.clear();
+                                        deadPrj.clear();*/
                                 }
                         }
                         try {
@@ -417,7 +418,15 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
 
         /* Internals */
 
-        private synchronized Collection moveProjectile(Projectile prj) {
+        private synchronized void sendProjectileSignal(Projectile prj) {
+                Client owner = prj.getOwner();
+                if (owner instanceof LocalClient) {
+                        ((LocalClient) owner).sendMoveProjectile(prj);
+                }
+        }
+
+        public synchronized boolean moveProjectile(Projectile prj) {
+
                 Collection deadPrj = new LinkedList();
                 assert(prj != null);
 
@@ -433,7 +442,9 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                         cell.setContents(null);
                         deadPrj.add(prj);
                         update();
-                        return deadPrj;
+                        clear_bullet(deadPrj);
+                        return true;
+                        //return deadPrj;
                 }
 
                 DirectedPoint newPoint = new DirectedPoint(dp.move(d), d);
@@ -452,7 +463,9 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                 cell.setContents(null);
                                 deadPrj.add(prj);
                                 update();
-                                return deadPrj;
+                                clear_bullet(deadPrj);
+                                return true;
+                                //return deadPrj;
                         } else {
                                 // Bullets destroy each other
                                 assert(contents instanceof Projectile);
@@ -461,7 +474,9 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                                 deadPrj.add(prj);
                                 deadPrj.add(contents);
                                 update();
-                                return deadPrj;
+                                clear_bullet(deadPrj);
+                                return true;
+                                //return deadPrj;
                         }
                 }
 
@@ -471,8 +486,22 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 projectileMap.put(prj, newPoint);
                 newCell.setContents(prj);
                 update();
-                return deadPrj;
+                clear_bullet(deadPrj);
+                return true;
         }
+
+        void clear_bullet(Collection deadPrj) {
+                Iterator it = deadPrj.iterator();
+                while (it.hasNext()) {
+                        Object deadpro = it.next();
+                        assert (deadpro instanceof Projectile);
+                        Projectile prjtemp = (Projectile) deadpro;
+                        projectileMap.remove(prjtemp);
+                        clientFired.remove(prjtemp.getOwner());
+                }
+                deadPrj.clear();
+        }
+
         /**
          * Internal helper for adding a {@link Client} to the {@link Maze}.
          * @param client The {@link Client} to be added.

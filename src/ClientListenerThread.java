@@ -92,6 +92,9 @@ class DequeueThread implements Runnable{
                     Client sourceClient = clientTable.get(received.players[1].name);
                     //Client destClient = clientTable.get(newPosition.name);
                     client.die(sourceClient, newPosition);
+                } else if (received.event == MPacket.MOVE_BULLET) {
+                    Projectile prj = received.projectile;
+                    client.bullet_move(prj);
                 } else {
                     throw new UnsupportedOperationException();
                 }    
