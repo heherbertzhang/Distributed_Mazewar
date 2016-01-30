@@ -193,7 +193,7 @@ public abstract class Client implements Serializable {
                 }
         }
 
-        public boolean bullet_move(Projectile prj) {
+        public boolean bullet_move(int prj) {
                 assert (maze != null);
 
                 if (maze.moveProjectile(prj)) {

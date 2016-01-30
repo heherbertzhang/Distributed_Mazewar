@@ -330,6 +330,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                 /* Write the new cell */
                 System.out.println("write the new cell");
                 projectileMap.put(prj, newPoint);
+                projectileCodeMap.put(prj.hashCode(), prj);
                 newCell.setContents(prj);
                 notifyClientFired(client);
                 update();
@@ -421,15 +422,15 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
         private synchronized void sendProjectileSignal(Projectile prj) {
                 Client owner = prj.getOwner();
                 if (owner instanceof LocalClient) {
-                        ((LocalClient) owner).sendMoveProjectile(prj);
+                        ((LocalClient) owner).sendMoveProjectile(prj.hashCode());
                 }
         }
 
-        public synchronized boolean moveProjectile(Projectile prj) {
+        public synchronized boolean moveProjectile(int hashcode) {
 
                 Collection deadPrj = new LinkedList();
-                assert(prj != null);
-
+                //assert(prj != null);
+                Projectile prj = (Projectile) projectileCodeMap.get(hashcode);
                 Object o = projectileMap.get(prj);
                 assert(o instanceof DirectedPoint);
                 DirectedPoint dp = (DirectedPoint)o;
@@ -497,6 +498,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
                         assert (deadpro instanceof Projectile);
                         Projectile prjtemp = (Projectile) deadpro;
                         projectileMap.remove(prjtemp);
+                        projectileCodeMap.remove(prjtemp.hashCode());
                         clientFired.remove(prjtemp.getOwner());
                 }
                 deadPrj.clear();
@@ -701,6 +703,7 @@ public class MazeImpl extends Maze implements Serializable, ClientListener, Runn
          * Mapping from {@link Projectile}s to {@link DirectedPoint}s.
          */
         private final Map projectileMap = new HashMap();
+        private final Map projectileCodeMap = new HashMap();
 
         /**
          * The set of {@link Client}s that have {@link Projectile}s in
