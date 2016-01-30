@@ -16,14 +16,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
 USA.
 */
-  
+
+import java.io.Serializable;
+
 /**
  * Simple class for representing projectiles.
  * @author Geoffrey Washburn &lt;<a href="mailto:geoffw@cis.upenn.edu">geoffw@cis.upenn.edu</a>&gt;
  * @version $Id: Projectile.java 350 2004-01-24 05:31:17Z geoffw $
  */
 
-public class Projectile {
+public class Projectile implements Serializable {
 
         /**
          * The {@link Client} that owns this {@link Projectile}.
