@@ -51,7 +51,7 @@ public abstract class LocalClient extends Client {
     public void sendKillClient(Player player, Player sourcePlayer) {
         try {
             MPacket packet = new MPacket(getName(), MPacket.ACTION, MPacket.DIE);
-            System.out.println(getName() + " die ==" + player.name);
+            //System.out.println(getName() + " die ==" + player.name);
             packet.players = new Player[2];
             packet.players[0] = player;//store the die info into the player and in packet
             packet.players[1] = sourcePlayer;
